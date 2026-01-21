@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Translate Clone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Select Background Mode -->
+        <div class="bg-mode-selector">
+            <label>Chế độ background:</label>
+            <select id="bgMode">
+                <option value="full">Toàn bộ trang</option>
+                <option value="input">Khung input + output</option>
+            </select>
+        </div>
+
+        <!-- Background Input -->
+        <div class="bg-input">
+            <label>URL Background (ảnh online):</label>
+            <input type="url" id="bgUrl" placeholder="https://example.com/image.jpg">
+            <button id="applyBg">Áp dụng</button>
+        </div>
+
+        <!-- Translator -->
+        <div class="translator">
+            <div class="input-section">
+                <textarea id="inputText" placeholder="Nhập văn bản cần dịch..."></textarea>
+                <div class="lang-selector">
+                    <select id="sourceLang">
+                        <option value="auto">Tự động phát hiện</option>
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <!-- Thêm ngôn ngữ khác nếu cần -->
+                    </select>
+                    <button id="swapLang">🔄</button>
+                    <select id="targetLang">
+                        <option value="en">English</option>
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                </div>
+                <button id="translateBtn">Dịch ngay</button>
+            </div>
+            <div class="output-section">
+                <textarea id="outputText" placeholder="Kết quả dịch sẽ hiện ở đây..." readonly></textarea>
+                <button id="copyBtn">Sao chép</button>
+                <button id="clearBtn">Xóa</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
