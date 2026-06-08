@@ -4,11 +4,96 @@
     <meta charset="UTF-8">
     <title>Theo Dõi Cân Nặng</title>
     <style>
-        /* Bạn có thể thêm CSS vào đây để trang trí cho đẹp */
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        /* Cấu hình giao diện Dark Mode */
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #121212; /* Nền tối chủ đạo */
+            color: #e0e0e0;            /* Màu chữ sáng */
+        }
+        
+        h2 {
+            color: #ffffff;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+
+        .form-group { 
+            margin-bottom: 15px; 
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Tùy chỉnh các ô Input */
+        input[type="text"], input[type="number"] {
+            flex: 1;
+            padding: 10px;
+            background-color: #1e1e1e; /* Nền input tối hơn */
+            border: 1px solid #444;      /* Viền xám mờ */
+            border-radius: 4px;
+            color: #ffffff;            /* Chữ trong input màu trắng */
+            outline: none;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #3b82f6;     /* Viền đổi sang xanh dương khi click vào */
+        }
+
+        /* Tùy chỉnh Nút bấm */
+        button {
+            padding: 10px 15px;
+            background-color: #2563eb; /* Màu xanh dương hiện đại */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #1d4ed8; /* Tối hơn một chút khi hover */
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #333;          /* Đường chia cắt mờ hơn */
+            margin: 25px 0;
+        }
+
+        /* Tùy chỉnh Bảng dữ liệu */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+            background-color: #1e1e1e; /* Nền bảng tối */
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th, td { 
+            padding: 12px; 
+            text-align: left; 
+        }
+
+        th {
+            background-color: #2a2a2a; /* Nền tiêu đề bảng */
+            color: #3b82f6;            /* Chữ tiêu đề màu xanh để làm điểm nhấn */
+            border-bottom: 2px solid #333;
+        }
+
+        td {
+            border-bottom: 1px solid #2a2a2a;
+            color: #cccccc;
+        }
+
+        /* Hiệu ứng đổi màu khi di chuột qua các hàng trong bảng */
+        tr:hover td {
+            background-color: #252525;
+        }
     </style>
 </head>
 <body>
@@ -42,6 +127,7 @@
         <tbody id="dataBody">
             </tbody>
     </table>
+
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbzcIDOcWS1jgIEMReDpzlHEEIQLtEtoo_Y1_Xa3-WsgcFL0vUZ5OZ4NORXCpPcLbEQ_4g/exec";
