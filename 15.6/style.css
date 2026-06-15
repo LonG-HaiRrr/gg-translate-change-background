@@ -218,14 +218,16 @@ tr:hover td {
 
 .chart-wrapper {
     background: #15151e;
-    padding: 25px;
-    border-radius: 12px;
+    padding: 20px;
+    border-radius: 10px;
     border: 1px solid #2a2a35;
-    box-shadow: 0 8px 30px rgba(0, 255, 135, 0.05); /* Hiệu ứng phát sáng nhẹ */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-.chart-wrapper:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 255, 135, 0.1);
+.chart-wrapper h3 {
+    text-align: center;
+    color: #00ff87;
+    margin-bottom: 15px;
+    font-family: monospace;
+    font-size: 18px;
 }

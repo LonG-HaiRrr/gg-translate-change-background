@@ -27,11 +27,12 @@ function openTab(evt, tabId) {
 /* ================= 2. HÀM API GỬI / XOÁ ================= */
 async function guiDuLieu() {
     let maTk = document.getElementById('maTk').value;
-    let tenTk = document.getElementById('tenTk').value; 
+    let tenTk = document.getElementById('tenTk').value; // Optional
     let canNang = document.getElementById('canNang').value;
     
     if(!maTk || !canNang) return alert("Vui lòng nhập đủ Mã tài khoản và Cân nặng!");
 
+    // Giữ nguyên action nhap_lieu cho file App Script cũ của bạn
     await fetch(API_URL, {
         method: "POST",
         body: JSON.stringify({ action: "nhap_lieu", maTk: maTk, canNang: canNang }) 
@@ -41,7 +42,6 @@ async function guiDuLieu() {
     document.getElementById('maTk').value = '';
     document.getElementById('tenTk').value = '';
     document.getElementById('canNang').value = '';
-    loadData(); // Cập nhật lại biểu đồ ngay
 }
 
 async function yeuCauXoa() {
@@ -54,7 +54,6 @@ async function yeuCauXoa() {
     });
     alert("Đã gửi yêu cầu xoá!");
     document.getElementById('maTkXoa').value = '';
-    loadData(); // Cập nhật lại biểu đồ ngay
 }
 
 /* ================= 3. HÀM LẤY VÀ XỬ LÝ DỮ LIỆU ================= */
@@ -64,73 +63,56 @@ async function loadData() {
         let data = await res.json();
         
         let htmlTable = "";
-        let rawGroupedData = {}; // Gom dữ liệu thô để sắp xếp
+        let groupedData = {}; // Object nhóm dữ liệu để vẽ biểu đồ
 
         data.forEach(row => {
             // Bỏ qua dòng tiêu đề nếu script trả về
             if(row[0] === "Mã Tài Khoản" || row[2] === "Cân Nặng") return;
 
-            // Lấy Tên từ cột B (index 1), nếu không có tên thì lấy tạm Mã TK cột A (index 0) làm tên hiển thị
-            let originalTen = row[1] ? row[1].toString().trim() : "";
             let originalMaTk = row[0] ? row[0].toString().trim() : "";
-            
-            let displayTen = originalTen;
-            if (!displayTen) {
-                displayTen = originalMaTk || "Ẩn danh";
+            let lowerMaTk = originalMaTk.toLowerCase();
+            let displayMaTk = originalMaTk;
+
+            // GỘP TÊN: Rỗng, "1", "long" -> "longhairrr"
+            if (lowerMaTk === "" || lowerMaTk === "1" || lowerMaTk === "long") {
+                displayMaTk = "longhairrr";
             }
 
-            // Định dạng chữ thường để check gộp tên "long" -> "longhairrr"
-            let lowerTen = displayTen.toLowerCase();
-            if (lowerTen === "long" || lowerTen === "l" || lowerTen === "1") {
-                displayTen = "longhairrr";
-            }
-
-            // Cân nặng ở cột C (index 2)
+            // Dữ liệu từ Sheet theo ảnh: Index 2 là Cân Nặng, Index 3 là Ngày
             let canNang = parseFloat(row[2]);
-            if (isNaN(canNang)) return; 
+            if (isNaN(canNang)) return; // Bỏ qua nếu cân nặng không phải là số
 
-            // Ngày nhập ở cột D (index 3)
             let dateObj = new Date(row[3]);
-            if(isNaN(dateObj.getTime())) return; 
+            if(isNaN(dateObj.getTime())) return; // Bỏ qua nếu ngày không hợp lệ
 
+            // Format Giờ phút giây và Ngày
             let timeStr = dateObj.toLocaleTimeString('vi-VN', { hour12: false });
             let dateStr = dateObj.toLocaleDateString('vi-VN');
             let fullDateTime = `${dateStr} ${timeStr}`;
 
-            // TẠO HTML CHO BẢNG THỐNG KÊ (Hiện theo Tên chuẩn)
+            // 1. TẠO HTML CHO BẢNG
             htmlTable += `<tr>
-                <td><strong>${displayTen}</strong></td>
+                <td><strong>${displayMaTk}</strong></td>
                 <td>${canNang}</td>
                 <td>${timeStr}</td>
                 <td>${dateStr}</td>
             </tr>`;
 
-            // NHÓM DỮ LIỆU THEO TÊN ĐỂ LÁT NỮA SORT
-            if(!rawGroupedData[displayTen]) {
-                rawGroupedData[displayTen] = [];
+            // 2. NHÓM DỮ LIỆU CHO BIỂU ĐỒ
+            if(!groupedData[displayMaTk]) {
+                groupedData[displayMaTk] = {
+                    labels: [], // Chứa chuỗi thời gian trục X
+                    weights: [] // Chứa giá trị cân nặng trục Y
+                };
             }
-            rawGroupedData[displayTen].push({
-                timestamp: dateObj.getTime(), // Dùng để sắp xếp chuẩn thời gian
-                fullDateTime: fullDateTime,
-                weight: canNang
-            });
+            groupedData[displayMaTk].labels.push(fullDateTime);
+            groupedData[displayMaTk].weights.push(canNang);
         });
 
         document.getElementById('dataBody').innerHTML = htmlTable;
 
-        // Sắp xếp dữ liệu của từng người theo đúng thứ tự thời gian tăng dần (Cũ -> Mới)
-        let finalChartData = {};
-        for (let user in rawGroupedData) {
-            rawGroupedData[user].sort((a, b) => a.timestamp - b.timestamp);
-
-            finalChartData[user] = {
-                labels: rawGroupedData[user].map(item => item.fullDateTime),
-                weights: rawGroupedData[user].map(item => item.weight)
-            };
-        }
-
-        // Tiến hành render biểu đồ ra giao diện
-        renderCharts(finalChartData);
+        // Vẽ biểu đồ
+        renderCharts(groupedData);
 
     } catch (error) {
         console.error("Lỗi khi load dữ liệu: ", error);
@@ -138,18 +120,24 @@ async function loadData() {
 }
 
 /* ================= 4. HÀM VẼ BIỂU ĐỒ BẰNG CHART.JS ================= */
-function renderCharts(finalChartData) {
+function renderCharts(groupedData) {
     const container = document.getElementById('chartsContainer');
-    container.innerHTML = ''; 
+    container.innerHTML = ''; // Xóa DOM biểu đồ cũ
 
-    for (const [user, data] of Object.entries(finalChartData)) {
+    for (const [user, data] of Object.entries(groupedData)) {
+        // Tạo HTML khung chứa Canvas
         const wrapper = document.createElement('div');
         wrapper.className = 'chart-wrapper';
-        wrapper.innerHTML = `<canvas id="chart-${user}"></canvas>`;
+        wrapper.innerHTML = `
+            <h3>[ ADC Dữ Liệu: ${user.toUpperCase()} ]</h3>
+            <canvas id="chart-${user}"></canvas>
+        `;
         container.appendChild(wrapper);
 
+        // Cấu hình vẽ Chart.js
         const ctx = document.getElementById(`chart-${user}`).getContext('2d');
         
+        // Hủy instance cũ nếu có để tránh lỗi hiển thị đè nhấp nháy
         if(chartInstances[user]) {
             chartInstances[user].destroy();
         }
@@ -159,19 +147,16 @@ function renderCharts(finalChartData) {
             data: {
                 labels: data.labels,
                 datasets: [{
-                    // Dòng thông tin Legend hiển thị theo Tên viết hoa cực đẹp
-                    label: `📌 TIẾN ĐỘ CỦA: ${user.toUpperCase()} (Đơn vị: kg)`,
+                    label: `Cân nặng (kg) của ${user}`,
                     data: data.weights,
-                    borderColor: '#00ff87', 
-                    backgroundColor: 'rgba(0, 255, 135, 0.1)', 
+                    borderColor: '#00ff87', // Màu đường line xanh neon
+                    backgroundColor: 'rgba(0, 255, 135, 0.1)', // Màu nền dưới line
                     borderWidth: 2,
-                    pointBackgroundColor: '#121216',
+                    pointBackgroundColor: '#60efff',
                     pointBorderColor: '#00ff87',
-                    pointBorderWidth: 2,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointHoverBackgroundColor: '#00ff87',
-                    tension: 0.4, 
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    tension: 0.3, // Độ cong của đường line
                     fill: true
                 }]
             },
@@ -179,33 +164,17 @@ function renderCharts(finalChartData) {
                 responsive: true,
                 scales: {
                     x: {
-                        ticks: { color: '#888', font: { family: 'monospace', size: 11 } },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        ticks: { color: '#00ff87' },
+                        grid: { color: 'rgba(0, 255, 135, 0.1)' }
                     },
                     y: {
-                        ticks: { color: '#00ff87', font: { family: 'monospace', size: 12 } },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        ticks: { color: '#00ff87' },
+                        grid: { color: 'rgba(0, 255, 135, 0.2)' }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: true,
-                        position: 'top',
-                        labels: { 
-                            color: '#00ff87', 
-                            font: { family: 'monospace', size: 14, weight: 'bold' },
-                            padding: 20,
-                            boxWidth: 20
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(18, 18, 22, 0.9)',
-                        titleColor: '#00ff87',
-                        bodyColor: '#fff',
-                        borderColor: '#00ff87',
-                        borderWidth: 1,
-                        padding: 10,
-                        displayColors: false
+                        labels: { color: '#fff', font: { family: 'monospace' } }
                     }
                 }
             }
@@ -213,4 +182,5 @@ function renderCharts(finalChartData) {
     }
 }
 
+// Chạy load dữ liệu ngay khi vừa tải trang
 document.addEventListener('DOMContentLoaded', loadData);

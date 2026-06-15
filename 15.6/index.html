@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title>Theo Dõi Cân Nặng | LonG HairRr</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Nhúng thư viện vẽ biểu đồ Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!-- HEADER & NAVIGATION TABS -->
     <header class="main-header">
         <div class="header-container">
             <a href="https://github.com/longhairrr" target="_blank" class="logo">LonG HairRr</a>
@@ -19,6 +21,7 @@
     </header>
 
     <main class="main-content">
+        <!-- ================= TAB 1: NHẬP THÔNG TIN ================= -->
         <div id="TabNhapLieu" class="tab-content active">
             <div class="container">
                 <h2>📊 Nhập Thông Tin Cân Nặng</h2>
@@ -29,8 +32,15 @@
                     <button onclick="guiDuLieu()">Gửi số liệu</button>
                 </div>
             </div>
+            <div class="container charts-section">
+                <h2>📈 Biểu Đồ Theo Dõi Toàn Thời Gian</h2>
+                <div id="chartsContainer">
+                    <!-- Các biểu đồ sẽ được tạo tự động bằng JS -->
+                </div>
+            </div>
         </div>
 
+        <!-- ================= TAB 2: YÊU CẦU XOÁ ================= -->
         <div id="TabXoa" class="tab-content">
             <div class="container">
                 <h2>❌ Yêu Cầu Xoá Dữ Liệu</h2>
@@ -39,8 +49,15 @@
                     <button class="btn-danger" onclick="yeuCauXoa()">Gửi yêu cầu xoá</button>
                 </div>
             </div>
+            <div class="container charts-section">
+                <h2>📈 Biểu Đồ Theo Dõi Toàn Thời Gian</h2>
+                <div id="chartsContainer">
+                    <!-- Các biểu đồ sẽ được tạo tự động bằng JS -->
+                </div>
+            </div>
         </div>
 
+        <!-- ================= TAB 3: DANH SÁCH & BIỂU ĐỒ ================= -->
         <div id="TabDanhSach" class="tab-content">
             <div class="container table-container">
                 <h2>📋 Bảng Thống Kê</h2>
@@ -57,15 +74,19 @@
                         </tr>
                     </thead>
                     <tbody id="dataBody">
-                        </tbody>
+                        <!-- Dữ liệu bảng sẽ được render tại đây -->
+                    </tbody>
                 </table>
             </div>
-        </div>
 
-        <div class="container charts-section">
-            <h2>📈 Biểu Đồ Theo Dõi Toàn Thời Gian</h2>
-            <div id="chartsContainer">
+            <!-- Khu vực render biểu đồ cho từng người dùng -->
+            <div class="container charts-section">
+                <h2>📈 Biểu Đồ Theo Dõi Toàn Thời Gian</h2>
+                <div id="chartsContainer">
+                    <!-- Các biểu đồ sẽ được tạo tự động bằng JS -->
                 </div>
+            </div>
+
         </div>
     </main>
 
