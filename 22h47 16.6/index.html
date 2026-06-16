@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theo Dõi Cân Nặng | LonG HairRr</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,9 +12,9 @@
         <div class="header-container">
             <a href="https://github.com/longhairrr" target="_blank" class="logo">LonG HairRr</a>
             <nav class="nav-tabs">
-                <button class="tab-link active" onclick="openTab(event, 'TabNhapLieu')">Nhập Liệu</button>
-                <button class="tab-link" onclick="openTab(event, 'TabXoa')">Xoá</button>
-                <button class="tab-link" onclick="openTab(event, 'TabDanhSach')">Thống Kê</button>
+                <button class="tab-link active" onclick="openTab(event, 'TabNhapLieu')">Nhập Thông Tin</button>
+                <button class="tab-link" onclick="openTab(event, 'TabXoa')">Yêu Cầu Xoá</button>
+                <button class="tab-link" onclick="openTab(event, 'TabDanhSach')">Danh Sách Thống Kê</button>
             </nav>
         </div>
     </header>
@@ -22,7 +22,7 @@
     <main class="main-content">
         <div id="TabNhapLieu" class="tab-content active">
             <div class="container glass-panel animate-slide">
-                <h2><span class="icon">📊</span> Cập Nhật Chỉ Số</h2>
+                <h2><span class="icon">📊</span> Nhập Thông Tin Cân Nặng</h2>
                 <div class="form-group">
                     <div class="input-wrapper">
                         <input type="text" id="maTk" placeholder=" ">
@@ -30,40 +30,41 @@
                     </div>
                     <div class="input-wrapper">
                         <input type="text" id="tenTk" placeholder=" ">
-                        <label>Tên hiển thị (Tùy chọn)</label>
+                        <label>Tên hiển thị (Có thể bỏ trống)</label>
                     </div>
                     <div class="input-wrapper">
                         <input type="number" id="canNang" step="0.1" placeholder=" ">
                         <label>Cân nặng (kg)</label>
                     </div>
-                    <button onclick="guiDuLieu()" class="btn-neon btn-primary">LƯU DỮ LIỆU</button>
+                    <button onclick="guiDuLieu()" class="btn-neon btn-primary">GỬI SỐ LIỆU</button>
                 </div>
             </div>
         </div>
 
         <div id="TabXoa" class="tab-content">
             <div class="container glass-panel animate-slide">
-                <h2><span class="icon">❌</span> Xóa Hồ Sơ</h2>
+                <h2><span class="icon">❌</span> Yêu Cầu Xoá Dữ Liệu</h2>
                 <div class="form-group">
                     <div class="input-wrapper">
                         <input type="text" id="maTkXoa" placeholder=" ">
-                        <label>Mã tài khoản cần xoá</label>
+                        <label>Nhập mã tài khoản cần xoá</label>
                     </div>
-                    <button onclick="yeuCauXoa()" class="btn-neon btn-danger">XÁC NHẬN XOÁ</button>
+                    <button onclick="yeuCauXoa()" class="btn-neon btn-danger">GỬI YÊU CẦU XOÁ</button>
                 </div>
             </div>
         </div>
 
         <div id="TabDanhSach" class="tab-content">
             <div class="container glass-panel animate-slide">
-                <h2><span class="icon">📋</span> 20 Cập Nhật Gần Nhất</h2>
+                <h2><span class="icon">📋</span> Bảng Thống Kê Dữ Liệu</h2>
                 <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
-                                <th>Thành Viên</th>
+                                <th>Tên hiển thị</th>
                                 <th>Cân Nặng (kg)</th>
-                                <th>Thời Gian Ghi Nhận</th>
+                                <th>Giờ Cập Nhật</th>
+                                <th>Ngày Cập Nhật</th>
                             </tr>
                         </thead>
                         <tbody id="dataBody">
@@ -74,22 +75,12 @@
         </div>
 
         <div class="container glass-panel chart-global-section animate-slide-delayed">
-            
-            <div class="chart-relative-wrapper" style="margin-bottom: 40px;">
-                <h2><span class="icon">⚔️</span> Biểu Đồ So Sánh Các Thành Viên</h2>
+            <h2><span class="icon">📈</span> Biểu Đồ Tiến Độ Toàn Thời Gian</h2>
+            <div class="chart-relative-wrapper">
                 <div id="chartLoader" class="chart-loader-container">
                     <div class="cyber-spinner"></div>
                     <span class="loader-text">DATALINK LOADING...</span>
                 </div>
-                <div class="chart-wrapper">
-                    <canvas id="chart-all-comparison" style="width:100%; height:320px;"></canvas>
-                </div>
-            </div>
-
-            <div class="chart-relative-wrapper">
-                <h2><span class="icon">📈</span> Tiến Độ Cá Nhân</h2>
-                <div class="mobile-chart-hint">📱 Hiển thị 15 mốc gần nhất. Xem chi tiết hơn bằng cách xoay ngang điện thoại hoặc sử dụng laptop.</div>
-                
                 <div id="chartsContainer">
                     </div>
             </div>
