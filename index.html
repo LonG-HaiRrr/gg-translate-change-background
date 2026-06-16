@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theo Dõi Cân Nặng | LonG HairRr</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,59 +14,76 @@
             <nav class="nav-tabs">
                 <button class="tab-link active" onclick="openTab(event, 'TabNhapLieu')">Nhập Thông Tin</button>
                 <button class="tab-link" onclick="openTab(event, 'TabXoa')">Yêu Cầu Xoá</button>
-                <button class="tab-link" onclick="openTab(event, 'TabDanhSach')">Danh Sách Cân Nặng</button>
+                <button class="tab-link" onclick="openTab(event, 'TabDanhSach')">Danh Sách Thống Kê</button>
             </nav>
         </div>
     </header>
 
     <main class="main-content">
         <div id="TabNhapLieu" class="tab-content active">
-            <div class="container">
-                <h2>📊 Nhập Thông Tin Cân Nặng</h2>
+            <div class="container glass-panel animate-slide">
+                <h2><span class="icon">📊</span> Nhập Thông Tin Cân Nặng</h2>
                 <div class="form-group">
-                    <input type="text" id="maTk" placeholder="Mã tài khoản (VD: long)">
-                    <input type="text" id="tenTk" placeholder="Tên (Có thể bỏ trống)">
-                    <input type="number" id="canNang" placeholder="Cân nặng (kg)" step="0.1">
-                    <button onclick="guiDuLieu()">Gửi số liệu</button>
+                    <div class="input-wrapper">
+                        <input type="text" id="maTk" placeholder=" ">
+                        <label>Mã tài khoản (VD: long)</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" id="tenTk" placeholder=" ">
+                        <label>Tên hiển thị (Có thể bỏ trống)</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="number" id="canNang" step="0.1" placeholder=" ">
+                        <label>Cân nặng (kg)</label>
+                    </div>
+                    <button onclick="guiDuLieu()" class="btn-neon btn-primary">GỬI SỐ LIỆU</button>
                 </div>
             </div>
         </div>
 
         <div id="TabXoa" class="tab-content">
-            <div class="container">
-                <h2>❌ Yêu Cầu Xoá Dữ Liệu</h2>
+            <div class="container glass-panel animate-slide">
+                <h2><span class="icon">❌</span> Yêu Cầu Xoá Dữ Liệu</h2>
                 <div class="form-group">
-                    <input type="text" id="maTkXoa" placeholder="Nhập mã tài khoản cần xoá">
-                    <button class="btn-danger" onclick="yeuCauXoa()">Gửi yêu cầu xoá</button>
+                    <div class="input-wrapper">
+                        <input type="text" id="maTkXoa" placeholder=" ">
+                        <label>Nhập mã tài khoản cần xoá</label>
+                    </div>
+                    <button onclick="yeuCauXoa()" class="btn-neon btn-danger">GỬI YÊU CẦU XOÁ</button>
                 </div>
             </div>
         </div>
 
         <div id="TabDanhSach" class="tab-content">
-            <div class="container table-container">
-                <h2>📋 Bảng Thống Kê</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th rowspan="2">Tên hiển thị</th>
-                            <th rowspan="2">Cân Nặng (kg)</th>
-                            <th colspan="2" style="text-align: center;">Thời điểm cập nhật lần cuối</th>
-                        </tr>
-                        <tr>
-                            <th>Giờ - Phút - Giây</th>
-                            <th>Ngày</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dataBody">
-                        </tbody>
-                </table>
+            <div class="container glass-panel animate-slide">
+                <h2><span class="icon">📋</span> Bảng Thống Kê Dữ Liệu</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tên hiển thị</th>
+                                <th>Cân Nặng (kg)</th>
+                                <th>Giờ Cập Nhật</th>
+                                <th>Ngày Cập Nhật</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataBody">
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="container charts-section">
-            <h2>📈 Biểu Đồ Theo Dõi Toàn Thời Gian</h2>
-            <div id="chartsContainer">
+        <div class="container glass-panel chart-global-section animate-slide-delayed">
+            <h2><span class="icon">📈</span> Biểu Đồ Tiến Độ Toàn Thời Gian</h2>
+            <div class="chart-relative-wrapper">
+                <div id="chartLoader" class="chart-loader-container">
+                    <div class="cyber-spinner"></div>
+                    <span class="loader-text">DATALINK LOADING...</span>
                 </div>
+                <div id="chartsContainer">
+                    </div>
+            </div>
         </div>
     </main>
 
